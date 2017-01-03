@@ -1,2 +1,30 @@
 ---
-# tasks file for bla
+# tasks file for hdp-ambari-agents
+- name: add ambari repo
+  get_url: url={{ ambari_repo_url }} dest=/etc/yum.repos.d/ambari.repo
+
+- name: install ambari agent
+  yum: name=ambari-agent
+
+- name: configure ambari agent hostname of ambari server
+  lineinfile:
+    dest: /etc/ambari-agent/conf/ambari-agent.ini
+    regexp: '^hostname='
+    line: "hostname={{ hostvars[groups['utility'][0]]['ansible_fqdn'] }}"
+    
+- name: configure ambari agent url_port
+  lineinfile:
+    dest: /etc/ambari-agent/conf/ambari-agent.ini
+    regexp: '^url_port='
+    line: 'url_port={{ ambari_agent_url_port }}'
+
+- name: configure ambari agent secured_url_port
+  lineinfile:
+    dest: /etc/ambari-agent/conf/ambari-agent.ini
+    regexp: '^secured_url_port='
+    line: 'secured_url_port={{ ambari_agent_secured_url_port }}'
+
+- name: start ambari agent
+  service: name=ambari-agent state=started enabled=yes
+
+  
