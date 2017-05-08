@@ -6,6 +6,12 @@
 - name: install ambari agent
   yum: name=ambari-agent
 
+- name: create ambari group
+  group: name=ambari state=present
+
+- name: create ambari user
+  user: name=ambari group=ambari
+
 - name: configure ambari agent hostname of ambari server
   lineinfile:
     dest: /etc/ambari-agent/conf/ambari-agent.ini
