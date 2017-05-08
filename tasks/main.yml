@@ -31,6 +31,10 @@
     line: 'secured_url_port={{ ambari_agent_secured_url_port }}'
 
 - name: start ambari agent
-  service: name=ambari-agent state=started enabled=yes
+  systemd: name=ambari-agent state=started enabled=yes
+  when: ansible_distribution == 'CentOS' and ansible_distribution_major_version == '7'
 
+- name: start ambari agent
+  service: name=ambari-agent state=started enabled=yes
+  when: ansible_distribution == 'CentOS' and ansible_distribution_major_version == '6'
   
