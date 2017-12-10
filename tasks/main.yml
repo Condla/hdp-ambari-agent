@@ -16,7 +16,8 @@
   lineinfile:
     dest: /etc/ambari-agent/conf/ambari-agent.ini
     regexp: '^hostname='
-    line: "hostname={{ hostvars[groups['utility'][0]]['ansible_fqdn'] }}"
+#    line: "hostname={{ hostvars[groups['utility'][0]]['ansible_fqdn'] }}"
+    line: "hostname={{ ambari_server_hostname }}"
     
 - name: configure ambari agent url_port
   lineinfile:
